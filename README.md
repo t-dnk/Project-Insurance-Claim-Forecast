@@ -1,12 +1,10 @@
 # Project-Insurance-Claim-Forecast
 ## Prédiction des coûts de sinistres en assurance santé : comparaison GLM et Neural Network
 ##### En assurance santé, l'estimation du coût des prestations est un enjeu important pour les compagnies d'assurance, car cela permet de mieux anticiper les dépenses liées aux sinistres et peut contribuer aux travaux de tarifications.
-
 ##### L'objectif de ce projet est de prédire les montants individuels de sinistre `claim` à partir des caractéristiques des assurés en comparant différentes méthodes de modélisation.
-
 ##### Trois approches ont été étudiées lors de ce projet : une régression linéaire multiple, un GLM Gamma avec un lien logarithmique et un Neural Network.
-
 ##### Les NN (Neural Network) permettent d'apprendre les relations non linéaires et les interactions complexes pouvant exister entre les variables explicatives. 
+
 <br>
 
 ## 1. Préparation des données
@@ -165,7 +163,7 @@ Par ailleurs, les modèles de régression comparés ne comportent pas d'interact
 
 ## 8. Technologies utilisées
 
-Le projet a été réalisé principalement avec **R** et les outils suivants :
+Le projet a été réalisé principalement avec les outils suivants :
 
 | Outil | Utilisation |
 |---|---|
@@ -184,7 +182,7 @@ Ce projet avait pour objectif de comparer plusieurs approches de modélisation p
 Les résultats obtenus montrent que le Neural Network développé présente de meilleures performances prédictives que la régression linéaire multiple et le GLM Gamma étudiés.
 
 Avec une **MAE de 4 086 USD et une RMSE de 5 515 USD**, le réseau de neurones réduit respectivement ces erreurs d'environ **12,1 % et 13,7 % par rapport au GLM Gamma**.
-Ces résultats illustrent l'intérêt potentiel des réseaux de neurones comme outils complémentaires aux approches actuarielles traditionnelles.
+Ces résultats illustrent l'intérêt potentiel des réseaux de neurones comme outils complémentaires aux approches traditionnelles en actuariat.
 
 Ils montrent également qu'un modèle sophistiqué n'est pas une garantie de performance car la préparation des données, la méthode d'entraînement, l'évaluation et la comparaison avec des modèles de référence jouent un rôle essentiel.
 

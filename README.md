@@ -1,13 +1,13 @@
 # Project-Insurance-Claim-Forecast
 ## Prédiction des coûts de sinistres en assurance santé : comparaison GLM et Neural Network
-##### En assurance santé, l'estimation du coût des prestations est un enjeu important pour les compagnies d'assurance, car cela permet de mieux anticiper les dépenses liées aux sinistres et peut contribuer aux travaux de tarifications.
-##### L'objectif de ce projet est de prédire les montants individuels de sinistre `claim` à partir des caractéristiques des assurés en comparant différentes méthodes de modélisation.
-##### Trois approches ont été étudiées lors de ce projet : une régression linéaire multiple, un GLM Gamma avec un lien logarithmique et un Neural Network.
-##### Les NN (Neural Network) permettent d'apprendre les relations non linéaires et les interactions complexes pouvant exister entre les variables explicatives. 
+ En assurance santé, l'estimation du coût des prestations est un enjeu important pour les compagnies d'assurance, car cela permet de mieux anticiper les dépenses liées aux sinistres et peut contribuer aux travaux de tarifications.
+ L'objectif de ce projet est de prédire les montants individuels de sinistre `claim` à partir des caractéristiques des assurés en comparant différentes méthodes de modélisation.
+ Trois approches ont été étudiées lors de ce projet : une régression linéaire multiple, un GLM Gamma avec un lien logarithmique et un Neural Network.
+ Les NN (Neural Network) permettent d'apprendre les relations non linéaires et les interactions complexes pouvant exister entre les variables explicatives. 
 
 <br>
 
-## 1. Préparation des données
+## 1. Présentation des données
 
 Les données utilisées dans ce projet proviennent de Kaggle. Le dataset contient environ 1 340 observations, chacune correspondant à un assuré.
 La variable cible est `claim`, qui représente le montant de sinistre associé à chaque observation, exprimé en USD.
@@ -19,8 +19,7 @@ La variable cible est `claim`, qui représente le montant de sinistre associé �
 | bmi | Indice de masse corporelle | 
 | bloodpressure | Pression artérielle | 
 | diabetic | Statut diabétique | 
-| gender | Genre | 
-| child | Nombre d'enfants | 
+| children | Nombre d'enfants | 
 | region | Région géorgraphique | 
 | smoker | Statut fumeur | 
 
@@ -51,6 +50,14 @@ Les montants moyens observés sont approximativement :
 - **Non-fumeurs : 8 420 USD**
 
 Le statut fumeur apparaît fortement associé au montant des sinistres.
+
+### 2.2 Relation entre BMI et le montant des sinistres
+L'analyse exploratoire suggère que la relation entre l'indice de masse corporelle et le montant des sinistres  varie selon le statut fumeur.
+
+Une association positive plus marquée a été observée chez les fumeurs, tandis que la relation apparaît plus faible chez les non-fumeurs.
+Cette observation suggère une interaction potentielle entre bmi et smoker.
+
+Elle motive l'étude de méthodes capables de représenter des relations non linéaires et des interactions complexes.
 
 
 ## 3. Préparation des données
@@ -143,7 +150,7 @@ L'évaluation finale a été effectuée sur les 202 observations de test.
 |---|---:|---:|
 | GLM Gamma | 4 650,74 | 6 388,26 |
 | Régression linéaire multiple | 4 773,37 | 6 422,40 |
-| **Neu** | **4 086,43** | **5 515,05** |
+| **Neural Network** | **4 086,43** | **5 515,05** |
 
 Sur ce jeu de test, le réseau de neurones obtient les erreurs les plus faibles parmi les trois modèles comparés.
 
@@ -152,14 +159,25 @@ Par rapport au GLM Gamma, il présente une réduction d'environ :
 - **12,1 % de la MAE**
 - **13,7 % de la RMSE**
 
-### 7. Interprétation
+### 6.1 Interprétation
 
 Les résultats montrent qu'une architecture de réseau de neurones relativement simple peut apporter un gain de précision dans la prédiction des montants individuels de sinistres.
 Ce gain est compatible avec l'hypothèse selon laquelle une modélisation plus flexible permet de mieux représenter certaines relations complexes présentes dans les données.
 
 Par ailleurs, les modèles de régression comparés ne comportent pas d'interactions explicites ni de transformations non linéaires supplémentaires. Une comparaison avec des GLM enrichis pourrait donc conduire à des résultats différents.
 
+## 7. Analyse de l'interaction BMI × statut fumeur
 
+Afin d'examiner les relations apprises par le réseau, une analyse de dépendance partielle (Partial Dependence Plot) a été réalisée.
+Cette méthode consiste à faire varier le BMI et le statut fumeur tout en conservant les autres caractéristiques des observations, puis à calculer les prédictions moyennes du réseau.
+
+On observe alors, chez les non-fumeurs, les montants prédits augmentent relativement peu avec le BMI.
+Chez les fumeurs, les montants prédits augmentent beaucoup plus fortement avec le BMI.
+
+Les courbes n'étant pas parallèles, cette analyse met en évidence une interaction entre BMI et statut fumeur dans les prédictions du réseau.
+
+Le NN a appris à représenter une relation dont l'intensité dépend du profil de l'assuré.
+Cependant, cette analyse porte sur le comportement prédictif du modèle et ne permet pas d'établir une relation causale.
 
 ## 8. Technologies utilisées
 
@@ -186,4 +204,4 @@ Ces résultats illustrent l'intérêt potentiel des réseaux de neurones comme o
 
 Ils montrent également qu'un modèle sophistiqué n'est pas une garantie de performance car la préparation des données, la méthode d'entraînement, l'évaluation et la comparaison avec des modèles de référence jouent un rôle essentiel.
 
-
+### Source de données : https://www.kaggle.com/datasets/thedevastator/insurance-claim-analysis-demographic-and-health/discussion?sort=recent-comments

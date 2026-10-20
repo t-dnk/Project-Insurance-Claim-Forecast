@@ -346,3 +346,48 @@ rmse_lm_test
 
 resultats_test <- data.frame(Model = c("GLM Gamma", "Linear Regression", "Neural Network"), MAE = c(mae_glm_test, mae_lm_test, mae_nn_test),RMSE = c(rmse_glm_test, rmse_lm_test, rmse_nn_test))
 resultats_test
+
+#Is there a relationship between the BMI and smoker status?
+#Create bmi scenarios
+bmi_values <- seq(
+  quantile(train_data$bmi, 0.05),
+  quantile(train_data$bmi, 0.95),
+  length.out = 40
+)
+
+#Standardization
+bmi_mean <- mean(train_data$bmi)
+bmi_sd <- sd(train_data$bmi)
+
+
+pdp_no <- numeric(length(bmi_values))
+pdp_yes <- numeric(length(bmi_values))
+
+for (i in seq_along(bmi_values)) {
+  
+  
+  bmi_scaled <- (bmi_values[i] - bmi_mean)/bmi_sd
+  
+  #Non-smoker
+  X_no <- X_train
+  X_no[, 2] <- bmi_scaled
+  X_no[, 9] <- 0
+  
+  # Smoker
+  X_yes <- X_train
+  X_yes[, 2] <- bmi_scaled
+  X_yes[, 9] <- 1
+  
+
+  pdp_no[i] <- mean(as.numeric(predict(nn_model_correct, X_no, verbose = 0))) * 1000
+  
+  pdp_yes[i] <- mean(as.numeric(predict(nn_model_correct, X_yes, verbose = 0)) ) * 1000
+}
+
+plot(bmi_values, pdp_no, type = "l", col = "blue", lwd = 2, ylim = range(c(pdp_no, pdp_yes)),
+  xlab = "BMI", ylab = "Mean predicted claim", main = "Relationship predicted with the NN")
+
+lines(bmi_values, pdp_yes, col = "red", lwd = 2)
+
+legend("topleft", legend = c("Non-smoker", "Smoker"), col = c("blue", "red"), lwd = 2)
+
